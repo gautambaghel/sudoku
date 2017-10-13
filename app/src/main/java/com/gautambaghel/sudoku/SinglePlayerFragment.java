@@ -1,6 +1,5 @@
 package com.gautambaghel.sudoku;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -42,7 +41,36 @@ public class SinglePlayerFragment extends Fragment {
             R.id.tvSmall4, R.id.tvSmall5, R.id.tvSmall6, R.id.tvSmall7, R.id.tvSmall8,
             R.id.tvSmall9,};
 
-    EditText savedEditText;
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        boolean fromLeft;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            fromLeft = start == 0 && !cleanKey(s.toString()).equalsIgnoreCase("");
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            try {
+                if (fromLeft) {
+                    s.delete(1, s.length());
+                } else {
+                    s.delete(0, s.length() - 1);
+                }
+            } catch (Exception ignored) {
+            }
+
+            if (isInvalidKey(cleanKey(s.toString())))
+                s.clear();
+            hideKeyBoard();
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,10 +100,8 @@ public class SinglePlayerFragment extends Fragment {
                     mSmallTiles[large][small].setState(Tile.State.VARIABLE);
                 } else {
                     mSmallTiles[large][small].setState(Tile.State.FIXED);
-
-                    char c = (char) (48 + number);
-                    mSmallTiles[large][small].setNumber(c);
                 }
+                mSmallTiles[large][small].setNumber(number);
             }
             mLargeTiles[large].setSubTiles(mSmallTiles[large]);
         }
@@ -101,8 +127,11 @@ public class SinglePlayerFragment extends Fragment {
                 ImageButton inner = (ImageButton) outer.findViewById(mSmallIds[small]);
                 final EditText etInner = (EditText) outer.findViewById(mTvIds[small]);
 
+                String number = "";
                 final Tile smallTile = mSmallTiles[large][small];
-                String number = "" + smallTile.getNumber();
+                if (smallTile.getNumber() != 0)
+                    number = "" + smallTile.getNumber();
+
                 etInner.setRawInputType(Configuration.KEYBOARD_12KEY);
                 etInner.setText(number.toUpperCase());
                 etInner.clearFocus();
@@ -114,36 +143,7 @@ public class SinglePlayerFragment extends Fragment {
                 }
 
                 smallTile.setView(inner);
-
-                etInner.addTextChangedListener(new TextWatcher() {
-
-                    boolean fromLeft;
-
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        fromLeft = start == 0 && !cleanKey(s.toString()).equalsIgnoreCase("");
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                        try {
-                            if (fromLeft) {
-                                s.delete(1, s.length());
-                            } else {
-                                s.delete(0, s.length() - 1);
-                            }
-                        } catch (Exception ignored) {}
-
-                        if (isInvalidKey(cleanKey(s.toString())))
-                            s.clear();
-                        hideKeyBoard();
-                    }
-                });
+                etInner.addTextChangedListener(textWatcher);
             }
         }
     }
@@ -174,14 +174,11 @@ public class SinglePlayerFragment extends Fragment {
         }
     }
 
-    public void pressedThis(String key) {
-        if (savedEditText != null)
-            savedEditText.setText(key);
-    }
-
-    public void showKeyboard(EditText etInner) {
-        // show the keyboard so we can enter text
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(etInner, InputMethodManager.SHOW_FORCED);
+    public int[][] getBoard() {
+        int[][] board = new int[9][9];
+        for (int large = 0; large < 9; large++)
+            for (int small = 0; small < 9; small++)
+                board[large][small] = mSmallTiles[large][small].getNumber();
+        return board;
     }
 }

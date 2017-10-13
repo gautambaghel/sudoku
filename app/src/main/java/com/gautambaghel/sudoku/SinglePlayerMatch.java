@@ -4,8 +4,9 @@ package com.gautambaghel.sudoku;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
-import android.view.inputmethod.InputMethodManager;
+import android.view.View;
+import android.widget.ImageButton;
+import android.app.AlertDialog;
 
 /*
  * Created by Gautam on 10/11/17.
@@ -23,40 +24,46 @@ public class SinglePlayerMatch extends Activity {
 
         mGameFragment = (SinglePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_singleplayer);
-    }
 
-    /*
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        String key = KeyEvent.keyCodeToString(keyCode);
-        key = key.substring(key.length() - 1, key.length());
-        // key will be something like "KEYCODE_A" - extract the "A"
-        if (isNotValidKey(key)) {
-            // let the default implementation handle the event
-            closeKeyBoard();
-            return super.onKeyUp(keyCode, event);
-        } else {
-            mGameFragment.pressedThis(key);
-            closeKeyBoard();
-            return true;
-        }
-    }
-*/
-    private void closeKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
+        ImageButton submit = (ImageButton) findViewById(R.id.bSubmit);
+        ImageButton retry = (ImageButton) findViewById(R.id.bRetry);
 
-    private boolean isNotValidKey(String key) {
-        return !(key.equalsIgnoreCase("1") ||
-                key.equalsIgnoreCase("2") ||
-                key.equalsIgnoreCase("3") ||
-                key.equalsIgnoreCase("4") ||
-                key.equalsIgnoreCase("5") ||
-                key.equalsIgnoreCase("6") ||
-                key.equalsIgnoreCase("7") ||
-                key.equalsIgnoreCase("8") ||
-                key.equalsIgnoreCase("9"));
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message;
+                boolean won = false;
+
+                int[][] gameBoard = mGameFragment.getBoard();
+                SudokuSolver ss = new SudokuSolver(gameBoard);
+
+                if (!ss.completed())
+                    message = "Sudoku board is unfinished";
+                else if (!ss.checkPuzzle())
+                    message = "Sudoku board not solved correctly";
+                else {
+                    message = "You've solved this board, YAY!";
+                    won = true;
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(SinglePlayerMatch.this);
+                builder.setCancelable(true);
+                builder.setMessage(message);
+                builder.show();
+
+                if (won)
+                   onBackPressed();
+            }
+        });
+
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // TODO
+                // mGameFragment.resetBoard();
+            }
+        });
     }
 
 }

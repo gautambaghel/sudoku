@@ -19,7 +19,7 @@ public class Tile {
         this.context = fragment.getActivity();
     }
 
-    public char getNumber() {
+    public int getNumber() {
         return number;
     }
 
@@ -35,7 +35,7 @@ public class Tile {
     private State mState = State.VARIABLE;
     private View mView;
     private Tile mSubTiles[];
-    private char number;
+    private int number;
 
     public View getView() {
         return mView;
@@ -57,7 +57,7 @@ public class Tile {
         this.mSubTiles = subTiles;
     }
 
-    public void setNumber(char number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
