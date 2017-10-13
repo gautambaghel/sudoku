@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/menu_space"
+    tools:context="com.gautambaghel.sudoku.MainActivity">
+
+
+    <com.gautambaghel.sudoku.menu.ScrollingView
+        android:id="@+id/main_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:menuScrollingDrawable="@drawable/numbers_background" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/menu_background"
+        android:elevation="@dimen/elevation_high"
+        android:orientation="vertical"
+        android:padding="@dimen/menu_space">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/menu_space"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/menu_space"
+            android:paddingLeft="@dimen/menu_space"
+            android:paddingRight="@dimen/menu_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="#2E86C1"
+                android:textSize="@dimen/menu_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="U"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/menu_text_size"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="#239B56"
+                android:textSize="@dimen/menu_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/purple"
+                android:textSize="@dimen/menu_text_size"
+                android:textStyle="normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="K"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/mango_color"
+                android:textSize="@dimen/menu_text_size"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="U"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="#CA6F1E"
+                android:textSize="@dimen/menu_text_size"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bSinglePlayer"
+            style="@style/btnStyleYellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/menu_button_margin"
+            android:padding="@dimen/menu_button_padding"
+            android:text="Play" />
+
+        <Button
+            android:id="@+id/bExit"
+            style="@style/btnStyleYellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/menu_button_margin"
+            android:padding="@dimen/menu_button_padding"
+            android:text="Exit" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

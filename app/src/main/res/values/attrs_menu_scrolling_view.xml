@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="MenuScrollingView">
+        <attr name="menuScrollingDrawable" format="color|reference" />
+    </declare-styleable>
+</resources>

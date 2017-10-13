@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tile_cream"
+    android:elevation="@dimen/elevation_low"
+    android:padding="@dimen/small_board_padding">
+
+    <ImageButton
+        android:id="@+id/small1"
+        style="@style/TileButton"
+        android:layout_column="0"
+        android:layout_row="0" />
+
+    <EditText
+        android:id="@+id/tvSmall1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small2"
+        style="@style/TileButton"
+        android:layout_column="1"
+        android:layout_row="0" />
+
+    <EditText
+        android:id="@+id/tvSmall2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small3"
+        style="@style/TileButton"
+        android:layout_column="2"
+        android:layout_row="0" />
+
+    <EditText
+        android:id="@+id/tvSmall3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="2"
+        android:layout_row="0"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small4"
+        style="@style/TileButton"
+        android:layout_column="0"
+        android:layout_row="1" />
+
+    <EditText
+        android:id="@+id/tvSmall4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="0"
+        android:layout_row="1"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small5"
+        style="@style/TileButton"
+        android:layout_column="1"
+        android:layout_row="1" />
+
+    <EditText
+        android:id="@+id/tvSmall5"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small6"
+        style="@style/TileButton"
+        android:layout_column="2"
+        android:layout_row="1" />
+
+    <EditText
+        android:id="@+id/tvSmall6"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="2"
+        android:layout_row="1"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small7"
+        style="@style/TileButton"
+        android:layout_column="0"
+        android:layout_row="2" />
+
+    <EditText
+        android:id="@+id/tvSmall7"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="0"
+        android:layout_row="2"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small8"
+        style="@style/TileButton"
+        android:layout_column="1"
+        android:layout_row="2" />
+
+    <EditText
+        android:id="@+id/tvSmall8"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="1"
+        android:layout_row="2"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/small9"
+        style="@style/TileButton"
+        android:layout_column="2"
+        android:layout_row="2" />
+
+    <EditText
+        android:id="@+id/tvSmall9"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_column="2"
+        android:layout_row="2"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+</GridLayout>

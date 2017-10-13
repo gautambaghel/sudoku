@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAC57A">
+
+
+    <fragment
+        android:id="@+id/fragment_singleplayer"
+        class="com.gautambaghel.sudoku.SinglePlayerFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        tools:layout="@layout/largeboard" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_singleplayer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/bRetry"
+            style="@style/btnStyleYellowNoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:elevation="@dimen/elevation_low"
+            android:gravity="center"
+            android:padding="10dp"
+            android:src="@mipmap/retry" />
+
+        <ImageButton
+            android:id="@+id/bSubmit"
+            style="@style/btnStyleYellowNoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:elevation="@dimen/elevation_low"
+            android:gravity="center"
+            android:padding="10dp"
+            android:src="@mipmap/submit" />
+
+    </LinearLayout>
+
+</RelativeLayout>
