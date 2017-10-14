@@ -59,9 +59,7 @@ public class SinglePlayerMatch extends Activity {
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // TODO
-                // mGameFragment.resetBoard();
+                 mGameFragment.resetBoard();
             }
         });
     }

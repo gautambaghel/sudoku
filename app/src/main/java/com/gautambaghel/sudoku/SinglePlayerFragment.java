@@ -2,6 +2,8 @@ package com.gautambaghel.sudoku;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -11,10 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
 import android.widget.EditText;
-import android.graphics.Color;
-import android.content.res.Configuration;
+import android.widget.ImageButton;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -181,4 +181,11 @@ public class SinglePlayerFragment extends Fragment {
                 board[large][small] = mSmallTiles[large][small].getNumber();
         return board;
     }
+
+    public void resetBoard() {
+        initGame();
+        initViews(getView());
+        updateAllTiles();
+    }
+
 }
