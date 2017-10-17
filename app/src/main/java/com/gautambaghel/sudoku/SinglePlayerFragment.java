@@ -16,7 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.graphics.Typeface.BOLD;
+import static com.gautambaghel.sudoku.SinglePlayerMatch.PREF_RESTORE;
 
 /*
  * Created by Gautam on 10/11/17.
@@ -41,51 +43,30 @@ public class SinglePlayerFragment extends Fragment {
             R.id.tvSmall4, R.id.tvSmall5, R.id.tvSmall6, R.id.tvSmall7, R.id.tvSmall8,
             R.id.tvSmall9,};
 
-    private TextWatcher textWatcher = new TextWatcher() {
-
-        boolean fromLeft;
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            fromLeft = start == 0 && !cleanKey(s.toString()).equalsIgnoreCase("");
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-            try {
-                if (fromLeft) {
-                    s.delete(1, s.length());
-                } else {
-                    s.delete(0, s.length() - 1);
-                }
-            } catch (Exception ignored) {
-            }
-
-            if (isInvalidKey(cleanKey(s.toString())))
-                s.clear();
-            hideKeyBoard();
-        }
-    };
+    private View rootView;
+    private boolean gameSaved;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        initGame();
+        String gameData = getActivity().getPreferences(MODE_PRIVATE)
+                .getString(PREF_RESTORE, null);
+        if (gameData == null) {
+
+            SudokuGenerator sg = new SudokuGenerator();
+            sg.nextBoard(35);
+            sg.print();
+
+            initGame(sg.getBoard());
+            gameSaved = false;
+        } else {
+            gameSaved = true;
+        }
     }
 
-    private void initGame() {
+    private void initGame(int[][] board) {
         Log.d("UT3", "init game");
-
-        SudokuGenerator sg = new SudokuGenerator();
-        sg.nextBoard(35);
-        sg.print();
-
         mEntireBoard = new Tile(this);
 
         // Create all the tiles
@@ -95,7 +76,7 @@ public class SinglePlayerFragment extends Fragment {
             for (int small = 0; small < 9; small++) {
                 mSmallTiles[large][small] = new Tile(this);
 
-                int number = sg.getThisElementOnBoard(large, small);
+                int number = board[large][small];
                 if (number == 0) {
                     mSmallTiles[large][small].setState(Tile.State.VARIABLE);
                 } else {
@@ -110,9 +91,11 @@ public class SinglePlayerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.largeboard, container, false);
-        initViews(rootView);
-        updateAllTiles();
+        rootView = inflater.inflate(R.layout.largeboard, container, false);
+        if (!gameSaved) {
+            initViews(rootView);
+            updateAllTiles();
+        }
         return rootView;
     }
 
@@ -143,7 +126,43 @@ public class SinglePlayerFragment extends Fragment {
                 }
 
                 smallTile.setView(inner);
-                etInner.addTextChangedListener(textWatcher);
+                etInner.addTextChangedListener(new TextWatcher() {
+
+                    boolean fromLeft;
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        fromLeft = start == 0 && !cleanKey(s.toString()).equalsIgnoreCase("");
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                        try {
+                            if (fromLeft) {
+                                s.delete(1, s.length());
+                            } else {
+                                s.delete(0, s.length() - 1);
+                            }
+                        } catch (Exception ignored) {
+                            hideKeyBoard();
+                            return;
+                        }
+
+                        String key = cleanKey(s.toString());
+                        if (isInvalidKey(key)) {
+                            s.clear();
+                            hideKeyBoard();
+                        }
+
+                        smallTile.setNumber(Integer.parseInt(key));
+                        hideKeyBoard();
+                    }
+                });
             }
         }
     }
@@ -183,9 +202,48 @@ public class SinglePlayerFragment extends Fragment {
     }
 
     public void resetBoard() {
-        initGame();
+
+        SudokuGenerator sg = new SudokuGenerator();
+        sg.nextBoard(35);
+        sg.print();
+
+        initGame(sg.getBoard());
         initViews(getView());
         updateAllTiles();
     }
 
+    /**
+     * Create a string containing the state of the game.
+     */
+    public String getState() {
+        StringBuilder builder = new StringBuilder();
+        for (int large = 0; large < 9; large++) {
+            for (int small = 0; small < 9; small++) {
+                builder.append(mSmallTiles[large][small].getNumber());
+                builder.append(',');
+                builder.append(mSmallTiles[large][small].getState());
+                builder.append(',');
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Restore the state of the game from the given string.
+     */
+    public void putState(String gameData) {
+        String[] fields = gameData.split(",");
+        int index = 0;
+        for (int large = 0; large < 9; large++) {
+            for (int small = 0; small < 9; small++) {
+                int number = Integer.parseInt(fields[index++]);
+                mSmallTiles[large][small].setNumber(number);
+                Tile.State state = Tile.State.valueOf(fields[index++]);
+                mSmallTiles[large][small].setState(state);
+            }
+        }
+
+        initViews(rootView);
+        updateAllTiles();
+    }
 }

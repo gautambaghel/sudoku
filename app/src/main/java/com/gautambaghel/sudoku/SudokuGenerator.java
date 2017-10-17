@@ -158,7 +158,7 @@ class SudokuGenerator {
 
     private int[][] board;
 
-    int getThisElementOnBoard(int large, int small) {
-        return board[large][small];
+    int[][] getBoard() {
+        return board;
     }
 }

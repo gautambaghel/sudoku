@@ -2,11 +2,12 @@ package com.gautambaghel.sudoku;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.app.AlertDialog;
 
 /*
  * Created by Gautam on 10/11/17.
@@ -14,6 +15,7 @@ import android.app.AlertDialog;
 
 public class SinglePlayerMatch extends Activity {
 
+    public static final String PREF_RESTORE = "pref_restore";
     SinglePlayerFragment mGameFragment;
 
     @Override
@@ -25,6 +27,14 @@ public class SinglePlayerMatch extends Activity {
         mGameFragment = (SinglePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_singleplayer);
 
+        String gameData = getPreferences(MODE_PRIVATE)
+                .getString(PREF_RESTORE, null);
+        if (gameData != null)
+            mGameFragment.putState(gameData);
+        handleViews();
+    }
+
+    private void handleViews() {
         ImageButton submit = (ImageButton) findViewById(R.id.bSubmit);
         ImageButton retry = (ImageButton) findViewById(R.id.bRetry);
 
@@ -52,16 +62,26 @@ public class SinglePlayerMatch extends Activity {
                 builder.show();
 
                 if (won)
-                   onBackPressed();
+                    onBackPressed();
             }
         });
 
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 mGameFragment.resetBoard();
+                mGameFragment.resetBoard();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        String gameData = mGameFragment.getState();
+        getPreferences(MODE_PRIVATE).edit()
+                .putString(PREF_RESTORE, gameData)
+                .apply();
+        Log.d("UT3", "state = " + gameData);
     }
 
 }
