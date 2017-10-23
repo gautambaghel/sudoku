@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.graphics.Typeface.BOLD;
+import static android.graphics.Typeface.NORMAL;
 import static com.gautambaghel.sudoku.SinglePlayerMatch.PREF_RESTORE;
 
 /*
@@ -43,9 +44,6 @@ public class SinglePlayerFragment extends Fragment {
             R.id.tvSmall4, R.id.tvSmall5, R.id.tvSmall6, R.id.tvSmall7, R.id.tvSmall8,
             R.id.tvSmall9,};
 
-    private View rootView;
-    private boolean gameSaved;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,20 +51,17 @@ public class SinglePlayerFragment extends Fragment {
         String gameData = getActivity().getPreferences(MODE_PRIVATE)
                 .getString(PREF_RESTORE, null);
         if (gameData == null) {
-
-            SudokuGenerator sg = new SudokuGenerator();
-            sg.nextBoard(35);
-            sg.print();
-
-            initGame(sg.getBoard());
-            gameSaved = false;
+            newGame();
         } else {
-            gameSaved = true;
+            putState(gameData);
         }
     }
 
-    private void initGame(int[][] board) {
-        Log.d("UT3", "init game");
+    private void newGame() {
+        Log.d("UT3", "new game");
+
+        SudokuGenerator sg = new SudokuGenerator();
+        int[][] board = sg.nextBoard(35);
         mEntireBoard = new Tile(this);
 
         // Create all the tiles
@@ -91,11 +86,9 @@ public class SinglePlayerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.largeboard, container, false);
-        if (!gameSaved) {
-            initViews(rootView);
-            updateAllTiles();
-        }
+        View rootView = inflater.inflate(R.layout.largeboard, container, false);
+        initViews(rootView);
+        updateAllTiles();
         return rootView;
     }
 
@@ -112,6 +105,8 @@ public class SinglePlayerFragment extends Fragment {
 
                 String number = "";
                 final Tile smallTile = mSmallTiles[large][small];
+                smallTile.setView(inner);
+
                 if (smallTile.getNumber() != 0)
                     number = "" + smallTile.getNumber();
 
@@ -123,46 +118,50 @@ public class SinglePlayerFragment extends Fragment {
                     etInner.setTextColor(Color.BLACK);
                     etInner.setTypeface(null, BOLD);
                     etInner.setFocusable(false);
-                }
+                    etInner.addTextChangedListener(null);
+                } else {
+                    etInner.setTextColor(Color.GRAY);
+                    etInner.setTypeface(null, NORMAL);
+                    etInner.setFocusable(true);
 
-                smallTile.setView(inner);
-                etInner.addTextChangedListener(new TextWatcher() {
+                    etInner.addTextChangedListener(new TextWatcher() {
 
-                    boolean fromLeft;
+                        boolean fromLeft;
 
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        fromLeft = start == 0 && !cleanKey(s.toString()).equalsIgnoreCase("");
-                    }
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            fromLeft = start == 0 && !cleanKey(s.toString()).equalsIgnoreCase("");
+                        }
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        }
 
-                    @Override
-                    public void afterTextChanged(Editable s) {
+                        @Override
+                        public void afterTextChanged(Editable s) {
 
-                        try {
-                            if (fromLeft) {
-                                s.delete(1, s.length());
-                            } else {
-                                s.delete(0, s.length() - 1);
+                            try {
+                                if (fromLeft) {
+                                    s.delete(1, s.length());
+                                } else {
+                                    s.delete(0, s.length() - 1);
+                                }
+                            } catch (Exception ignored) {
+                                hideKeyBoard();
+                                return;
                             }
-                        } catch (Exception ignored) {
-                            hideKeyBoard();
-                            return;
-                        }
 
-                        String key = cleanKey(s.toString());
-                        if (isInvalidKey(key)) {
-                            s.clear();
+                            String key = cleanKey(s.toString());
+                            if (isInvalidKey(key)) {
+                                s.clear();
+                                hideKeyBoard();
+                            }
+
+                            smallTile.setNumber(Integer.parseInt(key));
                             hideKeyBoard();
                         }
-
-                        smallTile.setNumber(Integer.parseInt(key));
-                        hideKeyBoard();
-                    }
-                });
+                    });
+                }
             }
         }
     }
@@ -207,7 +206,7 @@ public class SinglePlayerFragment extends Fragment {
         sg.nextBoard(35);
         sg.print();
 
-        initGame(sg.getBoard());
+        newGame(sg.getBoard());
         initViews(getView());
         updateAllTiles();
     }
@@ -231,19 +230,26 @@ public class SinglePlayerFragment extends Fragment {
     /**
      * Restore the state of the game from the given string.
      */
-    public void putState(String gameData) {
+    private void putState(String gameData) {
+
         String[] fields = gameData.split(",");
         int index = 0;
+
+        Log.d("UT3", "continue game");
+        mEntireBoard = new Tile(this);
+
         for (int large = 0; large < 9; large++) {
+            mLargeTiles[large] = new Tile(this);
             for (int small = 0; small < 9; small++) {
+                mSmallTiles[large][small] = new Tile(this);
                 int number = Integer.parseInt(fields[index++]);
                 mSmallTiles[large][small].setNumber(number);
                 Tile.State state = Tile.State.valueOf(fields[index++]);
                 mSmallTiles[large][small].setState(state);
             }
+            mLargeTiles[large].setSubTiles(mSmallTiles[large]);
         }
-
-        initViews(rootView);
-        updateAllTiles();
+        mEntireBoard.setSubTiles(mLargeTiles);
     }
+
 }

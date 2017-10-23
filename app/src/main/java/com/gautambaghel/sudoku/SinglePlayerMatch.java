@@ -27,10 +27,6 @@ public class SinglePlayerMatch extends Activity {
         mGameFragment = (SinglePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_singleplayer);
 
-        String gameData = getPreferences(MODE_PRIVATE)
-                .getString(PREF_RESTORE, null);
-        if (gameData != null)
-            mGameFragment.putState(gameData);
         handleViews();
     }
 
