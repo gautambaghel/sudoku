@@ -44,6 +44,8 @@ public class SinglePlayerFragment extends Fragment {
             R.id.tvSmall4, R.id.tvSmall5, R.id.tvSmall6, R.id.tvSmall7, R.id.tvSmall8,
             R.id.tvSmall9,};
 
+    private View rootView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +88,7 @@ public class SinglePlayerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.largeboard, container, false);
+        rootView = inflater.inflate(R.layout.largeboard, container, false);
         initViews(rootView);
         updateAllTiles();
         return rootView;
@@ -101,7 +103,7 @@ public class SinglePlayerFragment extends Fragment {
 
             for (int small = 0; small < 9; small++) {
                 ImageButton inner = (ImageButton) outer.findViewById(mSmallIds[small]);
-                final EditText etInner = (EditText) outer.findViewById(mTvIds[small]);
+                EditText etInner = (EditText) outer.findViewById(mTvIds[small]);
 
                 String number = "";
                 final Tile smallTile = mSmallTiles[large][small];
@@ -118,12 +120,10 @@ public class SinglePlayerFragment extends Fragment {
                     etInner.setTextColor(Color.BLACK);
                     etInner.setTypeface(null, BOLD);
                     etInner.setFocusable(false);
-                    etInner.addTextChangedListener(null);
                 } else {
                     etInner.setTextColor(Color.GRAY);
                     etInner.setTypeface(null, NORMAL);
                     etInner.setFocusable(true);
-
                     etInner.addTextChangedListener(new TextWatcher() {
 
                         boolean fromLeft;
@@ -201,13 +201,8 @@ public class SinglePlayerFragment extends Fragment {
     }
 
     public void resetBoard() {
-
-        SudokuGenerator sg = new SudokuGenerator();
-        sg.nextBoard(35);
-        sg.print();
-
-        newGame(sg.getBoard());
-        initViews(getView());
+        newGame();
+        initViews(rootView);
         updateAllTiles();
     }
 
