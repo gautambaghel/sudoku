@@ -143,12 +143,12 @@ public class SinglePlayerFragment extends Fragment {
                             try {
                                 if (fromLeft) {
                                     s.delete(1, s.length());
+                                    smallTile.animate();
                                 } else {
                                     s.delete(0, s.length() - 1);
                                 }
+
                             } catch (Exception ignored) {
-                                hideKeyBoard();
-                                return;
                             }
 
                             String key = cleanKey(s.toString());
@@ -157,7 +157,11 @@ public class SinglePlayerFragment extends Fragment {
                                 hideKeyBoard();
                             }
 
-                            smallTile.setNumber(Integer.parseInt(key));
+                            try {
+                                smallTile.setNumber(Integer.parseInt(key));
+                            } catch (Exception ignored) {
+                            }
+
                             hideKeyBoard();
                         }
                     });
