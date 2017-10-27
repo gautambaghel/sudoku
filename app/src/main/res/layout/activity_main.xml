@@ -94,22 +94,32 @@
         <Button
             android:id="@+id/bSinglePlayer"
             style="@style/btnStyleYellow"
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/menu_button_margin"
             android:padding="@dimen/menu_button_padding"
-            android:text="Play" />
+            android:text="PLAY" />
+
+        <Button
+            android:id="@+id/bSettings"
+            style="@style/btnStyleYellow"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/menu_button_margin"
+            android:padding="@dimen/menu_button_padding"
+            android:text="SETTINGS" />
 
         <Button
             android:id="@+id/bExit"
             style="@style/btnStyleYellow"
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/menu_button_margin"
             android:padding="@dimen/menu_button_padding"
-            android:text="Exit" />
+            android:text="EXIT" />
 
     </LinearLayout>
 
